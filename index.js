@@ -248,16 +248,4 @@ function getPermits (auth, address, cb) {
     });
 }
 
-// scrapejsdom();
-mail([
-    {
-        plate: 'BPM3650',
-        from: '2018-03-19T06:02:48.348Z',
-        to: '2018-03-19T06:03:48.348Z'
-    },
-    {
-        plate: 'BGL4101',
-        from: '2018-03-19T06:02:48.348Z',
-        to: '2018-03-19T06:03:48.348Z'
-    }
-]);
+scrapejsdom();
