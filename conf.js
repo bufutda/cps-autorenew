@@ -14,5 +14,5 @@ module.exports = {
     cpsLogin: '/signin',
     cpsAuth: '/signin/authenticate',
     cpsOauthGet: '/oauth/authorize?response_type=token&client_id=eps-client&redirect_uri=https://cpa.permit.calgaryparking.com',
-    cpsApiDomain: 'https://cpa.permit.calgaryparking.com/api/'
+    cpsApiDomain: 'https://myparkingservices.com/api/'
 };

@@ -1,18 +1,26 @@
+const request = require('request');
+const urllib = require('url');
+const jsdom = require('jsdom');
+
+const conf = require('./conf.js');
+const log = require('./log.js');
+const mail = require('./mail.js');
+
 process.once("uncaughtException", function (e) {
     try {
         log.error(e);
     } catch (err) {
         console.error(e);
     }
-    process.exit(1);
+
+    setTimeout(() => {
+        process.exit(1);
+    }, 5000);
+
+    if (conf.sendMail) {
+        mail([], e);
+    }
 });
-
-const request = require('request');
-const jsdom = require('jsdom');
-
-const conf = require('./conf.js');
-const log = require('./log.js');
-const mail = require('./mail.js');
 
 log.setLevel(conf.logLevel);
 log.info('Starting...');
@@ -77,7 +85,8 @@ function sendAuthReq (csrf, session) {
             }
 
             log.debug(`Auth2 came back ${response.statusCode}`);
-            let url = response.request.uri.hash.substr(1);
+            log.debug(response.request.headers.referer);
+            let url = urllib.parse(response.request.headers.referer).hash.substr(1);
             let auth = {};
             for (let pair of url.split('&')) {
                 let keyvalue = pair.split('=');

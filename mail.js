@@ -4,8 +4,13 @@ const child_process = require('child_process');
 const conf = require('./conf.js');
 const log = require('./log.js');
 
-module.exports = function (updates) {
+module.exports = function (updates, error) {
     log.info('Sending update email');
+
+    let sucStr = 'SUCCESS';
+    if (error) {
+        sucStr = 'FAILED';
+    }
 
     let now = new Date().toLocaleString().toUpperCase();
 
@@ -16,14 +21,14 @@ module.exports = function (updates) {
 
     fs.writeFile('/tmp/cps-autorenew_mail.mail', `From: "Parking Renewal Script" <${conf.sendMailFrom}>
 To: ${conf.sendMailTo}
-Subject: [SCRIPT] Parking Renewal Update
+Subject: [SCRIPT] Parking Renewal Update ${sucStr}
 Content-Type: text/html
 
 <html>
     <head>
     </head>
     <body>
-        <h3>Script run ${now} SUCCESS</h3>
+        <h3>Script run ${now} ${sucStr}</h3>
         <table style="border: 1px solid black;" border="1" border-color="black">
             <thead>
                 <tr>
@@ -33,6 +38,9 @@ Content-Type: text/html
                 ${rows.join('\n')}
             </tbody>
         </table>
+<pre>
+${error || ''}
+</pre>
     </body>
 </html>`, (err) => {
         if (err) {
